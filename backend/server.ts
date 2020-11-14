@@ -1,12 +1,5 @@
-import app from "./app";
-
-/**
- * Start Express server.
- */
-const server = app.listen(3000, () => {
-    console.log(
-        "  App is running at http://localhost:3000"
-    );
-});
-
-export default server;
+import { App } from "./app";
+const application = new App();
+const app = application.get();
+const io = application.getIo();
+export { app, io };

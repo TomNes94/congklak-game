@@ -1,21 +1,51 @@
 import express from "express";
-import * as path from "path";
+import * as http from "http";
+import * as socketIo from "socket.io";
+import cors from "cors";
+import setControllers from "./controllers/sockets";
+import router from "./controllers/rest";
 
-// Controllers (route handlers)
-/* import * as homeController from "./controllers/home";
-import * as userController from "./controllers/user";
-import * as apiController from "./controllers/api";
-import * as contactController from "./controllers/contact";
+export class App {
+    public readonly PORT: number = 8000;
+    private _app: express.Application;
+    private server: http.Server;
+    public io: socketIo.Server;
 
- */
+    constructor() {
+        this.createApp();
+        this.createServer();
+        this.initSocket();
+        this.listen();
+    }
 
+    private initSocket(): void {
+        this.io = new socketIo.Server(this.server);
+    }
 
+    private createApp(): void {
+        this._app = express();
+        this._app.use(cors());
+        this._app.use(express.json());
+        this._app.use("/api", router);
+    }
 
-// Create Express server
-const app = express();
+    private createServer(): void {
+        this.server = new http.Server(this._app);
+    }
 
-app.use(
-    express.static(path.join(__dirname, "public"), { maxAge: 31557600000 })
-);
+    private listen(): void {
+        this.server.listen(this.PORT, () => {
+            console.log("Running server on port %s", this.PORT);
+        });
 
-export default app;
+        setControllers(this.io);
+    }
+
+    public get(): express.Application {
+        return this._app;
+    }
+
+    public getIo() {
+        return this.io;
+    }
+}
