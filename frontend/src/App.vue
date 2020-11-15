@@ -7,8 +7,9 @@
 </template>
 
 <style lang="scss">
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 #app {
-    font-family: Avenir, Helvetica, Arial, sans-serif;
+    font-family: Roboto, Helvetica, Arial, sans-serif;
     color: #2c3e50;
     height: 100%;
     width: 100%;

@@ -7,7 +7,7 @@
 import Board from "../components/Board";
 export default {
     name: "Home",
-    components: { Board },
+    components: { Board }
 };
 </script>
 

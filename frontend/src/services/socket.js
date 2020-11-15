@@ -7,6 +7,7 @@ export class VueSocket {
         });
 
         this.socket.on("connect", () => {
+            console.log(this.socket.id);
             this.socketId = this.socket.id;
         });
     }

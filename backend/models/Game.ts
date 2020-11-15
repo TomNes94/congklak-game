@@ -23,8 +23,8 @@ export class Game {
         this.players.push(additionalPlayer);
     }
 
-    onMoveReceived(move: Move): { playerOne: PlayerState; playerTwo: PlayerState } {
-        const newBoardState = this.state.handleMove(move.player, move.index);
-        return newBoardState;
+    onMoveReceived(move: Move): { boardState: PlayerState[]; nextPlayer: number; result: { finished: boolean; player: number } } {
+        const { boardState, nextPlayer, result } = this.state.handleMove(move.player, move.index);
+        return { boardState, nextPlayer, result };
     }
 }

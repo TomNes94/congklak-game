@@ -7,15 +7,16 @@ export function createRoom(req: Request, res: Response) {
     const id = generateRoomId();
     container.createGame(req.body.socketId, id);
     res.send({
-        roomId: id,
+        roomId: id
     });
 }
 
 export function joinRoom(req: Request, res: Response) {
     const container = GameContainer.getInstance();
-    const isJoinSuccesful = container.joinGame(req.params.socketId, req.params.roomId);
+    const socketId = req.query.id as string;
+    const isJoinSuccesful = container.joinGame(socketId, req.params.roomId);
     if (isJoinSuccesful) {
-        res.send("Succesfully joined room");
+        res.send({ roomId: req.params.roomId });
     } else {
         res.status(404).send("Room not found");
     }

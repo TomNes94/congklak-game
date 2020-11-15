@@ -1,35 +1,53 @@
 <template lang="pug">
 .board
     .holes-row
-        hole(v-for="hole in playerOne.nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, 1)" player=1)
+        hole(v-for="hole in boardState[0].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, 0)" player=0)
     .large-hole-row
-        large-hole(:isFilled="playerTwo.nrStonesLargeHole.number > 0" :nrStones="playerTwo.nrStonesLargeHole.number")
-        large-hole(:isFilled="playerOne.nrStonesLargeHole.number > 0" :nrStones="playerOne.nrStonesLargeHole.number")
+        large-hole(:isFilled="boardState[1].nrStonesLargeHole.number > 0" :nrStones="boardState[1].nrStonesLargeHole.number")
+        large-hole(:isFilled="boardState[0].nrStonesLargeHole.number > 0" :nrStones="boardState[0].nrStonesLargeHole.number")
     .holes-row.holes-row-reverse
-        hole(v-for="hole in playerTwo.nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, 2)" player=2)
-    
+        hole(v-for="hole in boardState[1].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, 1)" player=1)
+    message(:active = "showError")
+        span {{errorText}}
 </template>
 
 <script>
 import Hole from "./Hole";
 import LargeHole from "./LargeHole";
+import Message from "./Message";
 
 import { mapState, mapMutations } from "vuex";
 
 export default {
     components: {
         Hole,
-        LargeHole
+        LargeHole,
+        Message
     },
-    computed: mapState(["playerOne", "playerTwo", "vueSocket", "metaData"]),
+
+    computed: mapState(["boardState", "vueSocket", "metaData", "nextPlayer"]),
     mounted() {
         this.vueSocket.socket.on("moveResolved", data => {
             this.distributeStones(JSON.parse(data));
         });
     },
+    data() {
+        return {
+            errorText: null,
+            showError: false
+        };
+    },
     methods: {
         handleStoneClick(obj, player) {
-            this.vueSocket.socket.emit("move", JSON.stringify({ index: obj.index, player, roomId: this.metaData.roomId }));
+            if (player === this.metaData.player && player === this.nextPlayer) {
+                this.vueSocket.socket.emit("move", JSON.stringify({ index: obj.index, player, roomId: this.metaData.roomId }));
+            } else if (player === this.metaData.player) {
+                this.errorText = "It's not your turn yet!";
+                this.showError = true;
+            } else {
+                this.errorText = "This is not your side!";
+                this.showError = true;
+            }
         },
         ...mapMutations(["distributeStones", "emptyHole"])
     }

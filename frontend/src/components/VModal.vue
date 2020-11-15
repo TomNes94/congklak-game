@@ -17,7 +17,8 @@ export default {
     methods: {
         async createRoom() {
             const result = await axios.post("/api/room", { socketId: this.vueSocket.socketId });
-            this.setRoomId({ roomId: result.data.roomId });
+
+            this.setGameMetadata({ roomId: result.data.roomId, player: 0 });
             this.$router.push({
                 name: "BoardContainer",
                 params: { roomId: this.metaData.roomId }
@@ -26,18 +27,18 @@ export default {
         async joinRoom() {
             if (this.roomInput !== null) {
                 try {
-                    const result = await axios.get(`/api/room/${this.roomInput}`, { socketId: this.vueSocket.socketId });
-                    this.setRoomId(result.data.roomId);
+                    const result = await axios.get(`/api/room/${this.roomInput}`, { params: { id: this.vueSocket.socketId } });
+                    this.setGameMetadata({ roomId: result.data.roomId, player: 1 });
                     this.$router.push({
                         name: "BoardContainer",
-                        params: { roomId: this.metaData.roomId }
+                        params: { roomId: this.metaData.roomId, player: 1 }
                     });
                 } catch (error) {
                     console.log(error);
                 }
             }
         },
-        ...mapMutations(["setRoomId"])
+        ...mapMutations(["setGameMetadata"])
     },
     data() {
         return {

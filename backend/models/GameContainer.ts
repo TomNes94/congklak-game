@@ -24,6 +24,8 @@ export default class GameContainer {
 
     joinGame(socketId: string, roomId: string): boolean {
         const game = this.games.find(game => game.roomId === roomId);
+        const socket = this.connections.find(connection => connection.id === socketId);
+        socket.join(roomId);
         if (game) {
             game.addPlayerToRoom(socketId);
             return true;
@@ -40,7 +42,7 @@ export default class GameContainer {
 
     handleMove(roomId: string, move: Move) {
         const game = this.games.find(game => game.roomId === roomId);
-        const newBoardState = game.onMoveReceived(move);
-        return newBoardState;
+        const { boardState, nextPlayer, result } = game.onMoveReceived(move);
+        return { boardState, nextPlayer, result };
     }
 }
