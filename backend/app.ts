@@ -4,7 +4,8 @@ import * as socketIo from "socket.io";
 import cors from "cors";
 import setControllers from "./controllers/sockets";
 import router from "./controllers/rest";
-
+import serveApp from "./controllers/rest/serveApp";
+import path from "path";
 export class App {
     public readonly PORT: number = 8000;
     private _app: express.Application;
@@ -27,6 +28,8 @@ export class App {
         this._app.use(cors());
         this._app.use(express.json());
         this._app.use("/api", router);
+        this._app.use(express.static("frontend/dist"));
+        this._app.get("/", serveApp);
     }
 
     private createServer(): void {
@@ -35,7 +38,7 @@ export class App {
 
     private listen(): void {
         this.server.listen(this.PORT, () => {
-            console.log("Running server on port %s", this.PORT);
+            console.log("Running server on port %s", process.env.PORT || this.PORT);
         });
 
         setControllers(this.io);
