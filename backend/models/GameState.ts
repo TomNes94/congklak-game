@@ -149,7 +149,7 @@ export class GameState {
                 break;
             } else {
                 this.boardState[1].nrStonesLargeHole.number++;
-                if (numberOfStones + 1 === i) {
+                if (numberOfStones === i) {
                     extraTurn = true;
                 }
             }
