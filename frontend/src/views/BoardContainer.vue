@@ -33,5 +33,8 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+    @media (max-width: 480px) {
+        font-size: 1rem;
+    }
 }
 </style>

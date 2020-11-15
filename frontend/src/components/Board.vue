@@ -9,12 +9,14 @@
         hole(v-for="hole in boardState[1].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, 1)" player=1)
     message(:active = "showError")
         span {{errorText}}
+    victory-modal(:active="isFinished" :winner="winner")
 </template>
 
 <script>
 import Hole from "./Hole";
 import LargeHole from "./LargeHole";
 import Message from "./Message";
+import VictoryModal from "./VictoryModal";
 
 import { mapState, mapMutations } from "vuex";
 
@@ -22,14 +24,15 @@ export default {
     components: {
         Hole,
         LargeHole,
-        Message
+        Message,
+        VictoryModal
     },
 
     computed: {
         currentPlayer() {
             return this.nextPlayer === this.metaData.player ? "It's your turn" : "Wait for other turn";
         },
-        ...mapState(["boardState", "vueSocket", "metaData", "nextPlayer"])
+        ...mapState(["boardState", "vueSocket", "metaData", "nextPlayer", "isFinished", "winner"])
     },
     mounted() {
         this.vueSocket.socket.on("moveResolved", data => {
@@ -68,12 +71,20 @@ export default {
     flex-direction: column;
     align-items: center;
     padding: 2% 3%;
+    @media (max-width: 480px) {
+        width: 90%;
+        padding: 5px;
+        border-radius: 75px;
+    }
 }
 .holes-row {
     display: flex;
     width: 90%;
     justify-content: space-around;
     margin: 2%;
+    @media (max-width: 480px) {
+        margin: 7% 2%;
+    }
 }
 
 .holes-row-reverse {

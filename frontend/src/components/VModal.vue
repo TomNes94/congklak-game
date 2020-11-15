@@ -80,6 +80,10 @@ export default {
     left: 30%;
     width: 40%;
     height: 40%;
+    @media (max-width: 480px) {
+        left: 10%;
+        width: 80%;
+    }
 }
 
 .row {
@@ -94,6 +98,10 @@ export default {
     padding: 20px 40px;
     color: black;
     font-size: 1.75rem;
+    @media (max-width: 480px) {
+        padding: 10px 20px;
+        font-size: 0.7rem;
+    }
     border-radius: 20px;
     cursor: pointer;
     border: none;
@@ -105,6 +113,9 @@ export default {
 input {
     text-align: center;
     font-size: 1.75rem;
+    @media (max-width: 480px) {
+        font-size: 0.7rem;
+    }
 }
 
 hr {
@@ -114,5 +125,8 @@ hr {
 p {
     color: white;
     font-size: 1.75rem;
+    @media (max-width: 480px) {
+        font-size: 0.7rem;
+    }
 }
 </style>

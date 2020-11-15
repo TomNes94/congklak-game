@@ -24,6 +24,11 @@ export default {
     &:hover {
         background-color: grey;
     }
+
+    @media (max-width: 480px) {
+        height: 25px;
+        width: 100px;
+    }
 }
 
 .circle-small {
@@ -41,5 +46,8 @@ export default {
     bottom: -30%;
     left: 50%;
     color: #bbb;
+    @media (max-width: 480px) {
+        bottom: -70%;
+    }
 }
 </style>

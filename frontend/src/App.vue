@@ -29,6 +29,9 @@ body {
     align-items: center;
     background: black;
     font-size: 1.75rem;
+    @media (max-width: 480px) {
+        font-size: 1rem;
+    }
     a {
         font-weight: bold;
         color: white;

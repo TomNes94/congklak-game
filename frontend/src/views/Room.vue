@@ -31,6 +31,9 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    @media (max-width: 480px) {
+        font-size: 1rem;
+    }
 }
 .button-white {
     background-color: rgb(213, 213, 213);
@@ -38,6 +41,11 @@ export default {
     color: black;
     font-size: 1.75rem;
     border-radius: 10%;
+    @media (max-width: 480px) {
+        padding: 20px 50px;
+        border-radius: 10px;
+        font-size: 1rem;
+    }
     cursor: pointer;
     border: none;
     &:hover {
