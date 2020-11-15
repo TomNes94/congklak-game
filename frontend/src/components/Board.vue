@@ -25,7 +25,12 @@ export default {
         Message
     },
 
-    computed: mapState(["boardState", "vueSocket", "metaData", "nextPlayer"]),
+    computed: {
+        currentPlayer() {
+            return this.nextPlayer === this.metaData.player ? "It's your turn" : "Wait for other turn";
+        },
+        ...mapState(["boardState", "vueSocket", "metaData", "nextPlayer"])
+    },
     mounted() {
         this.vueSocket.socket.on("moveResolved", data => {
             this.distributeStones(JSON.parse(data));

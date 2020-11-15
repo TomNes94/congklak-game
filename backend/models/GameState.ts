@@ -124,7 +124,6 @@ export class GameState {
 
     distributeStones(index: number, player: number): boolean {
         let extraTurn = false;
-        console.log();
         let numberOfStones = player === 0 ? this.boardState[0].nrStonesSmallHole[index].number : this.boardState[1].nrStonesSmallHole[index - 8].number;
         // For each stone, find the appropriate action. This maybe possible in a simpler way
         for (let i = 1; i < numberOfStones + 1; i++) {
@@ -138,7 +137,7 @@ export class GameState {
                     break;
                 } else {
                     this.boardState[0].nrStonesLargeHole.number++;
-                    if (numberOfStones + 1 === i) {
+                    if (numberOfStones === i) {
                         extraTurn = true;
                     }
                 }
