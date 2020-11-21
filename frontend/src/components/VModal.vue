@@ -18,7 +18,7 @@ export default {
         async createRoom() {
             const result = await axios.post("/api/room", { socketId: this.vueSocket.socketId });
 
-            this.setGameMetadata({ roomId: result.data.roomId, player: 0 });
+            this.setGameMetadata({ roomId: result.data.roomId, player: 0, started: false });
             this.$router.push({
                 name: "BoardContainer",
                 params: { roomId: this.metaData.roomId }
@@ -28,7 +28,7 @@ export default {
             if (this.roomInput !== null) {
                 try {
                     const result = await axios.get(`/api/room/${this.roomInput}`, { params: { id: this.vueSocket.socketId } });
-                    this.setGameMetadata({ roomId: result.data.roomId, player: 1 });
+                    this.setGameMetadata({ roomId: result.data.roomId, player: 1, started: true });
                     this.$router.push({
                         name: "BoardContainer",
                         params: { roomId: this.metaData.roomId, player: 1 }

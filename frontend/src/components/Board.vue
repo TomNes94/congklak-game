@@ -9,7 +9,7 @@
         hole(v-for="hole in boardState[1].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, 1)" player=1)
     message(:active = "showError")
         span {{errorText}}
-    victory-modal(:active="isFinished" :winner="winner")
+    victory-modal(:active="isFinished" :isWinner="winner === metaData.player")
 </template>
 
 <script>
@@ -38,6 +38,9 @@ export default {
         this.vueSocket.socket.on("moveResolved", data => {
             this.distributeStones(JSON.parse(data));
         });
+        this.vueSocket.socket.on("gameStarted", () => {
+            this.updateGameMetadata({ started: true });
+        });
     },
     data() {
         return {
@@ -57,7 +60,7 @@ export default {
                 this.showError = true;
             }
         },
-        ...mapMutations(["distributeStones", "emptyHole"])
+        ...mapMutations(["distributeStones", "emptyHole", "updateGameMetadata"])
     }
 };
 </script>

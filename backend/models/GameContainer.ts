@@ -1,6 +1,6 @@
 import { Game, Move } from "./Game";
 import { Socket } from "socket.io";
-
+import { emitGameStartedEvent } from "../controllers/sockets/move.controller";
 export default class GameContainer {
     private static instance: GameContainer;
     connections: Socket[] = [];
@@ -28,6 +28,7 @@ export default class GameContainer {
         socket.join(roomId);
         if (game) {
             game.addPlayerToRoom(socketId);
+            emitGameStartedEvent(roomId);
             return true;
         } else {
             return false;

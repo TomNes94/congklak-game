@@ -2,15 +2,16 @@
 .board-container
     h2.player-current {{currentPlayer}}
     board
+    spinner-modal(:active="!metaData.started" :roomId="metaData.roomId")
 </template>
 
 <script>
 import Board from "../components/Board";
 import { mapState, mapMutations } from "vuex";
-
+import SpinnerModal from "../components/SpinnerModal";
 export default {
     name: "Home",
-    components: { Board },
+    components: { Board, SpinnerModal },
     computed: {
         currentPlayer() {
             return this.nextPlayer === this.metaData.player ? "It's your turn" : "Wait for other turn";

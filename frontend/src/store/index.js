@@ -85,15 +85,19 @@ export default createStore({
         isFinished: false,
         metaData: {
             roomId: null,
-            player: null
+            player: null,
+            started: false
         }
     },
     mutations: {
         setGameMetadata(state, payload) {
             state.metaData.roomId = payload.roomId;
             state.metaData.player = payload.player;
+            state.metaData.started = payload.started;
         },
-
+        updateGameMetadata(state, payload) {
+            state.metaData.started = payload.started;
+        },
         distributeStones(state, payload) {
             state.boardState = payload.boardState;
             state.nextPlayer = payload.nextPlayer;

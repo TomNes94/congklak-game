@@ -13,7 +13,7 @@ export class GameState {
         {
             nrStonesLargeHole: {
                 index: 7,
-                number: 7
+                number: 0
             },
             nrStonesSmallHole: [
                 {
@@ -49,7 +49,7 @@ export class GameState {
         {
             nrStonesLargeHole: {
                 index: 15,
-                number: 7
+                number: 0
             },
             nrStonesSmallHole: [
                 {
@@ -86,9 +86,9 @@ export class GameState {
 
     handleMove(player: number, index: number): { boardState: PlayerState[]; nextPlayer: number; result: { finished: boolean; player: number } } {
         let nextPlayer = player === 1 ? 0 : 1;
-        const extraTurn = this.distributeStones(index, player);
+        const numberOfStones = this.emptyHole(index);
+        const extraTurn = this.distributeStones(index, player, numberOfStones[0].number);
         if (extraTurn) nextPlayer = player;
-        this.emptyHole(index);
         const result = this.checkWinCondition();
         return { boardState: this.boardState, nextPlayer, result };
     }
@@ -101,7 +101,7 @@ export class GameState {
         const anyStonesLeft =
             this.boardState[0].nrStonesSmallHole.some(hole => hole.number !== 0) || this.boardState[1].nrStonesSmallHole.some(hole => hole.number !== 0);
         if (!anyStonesLeft) {
-            if (this.boardState[0].nrStonesLargeHole.number > this.boardState[0].nrStonesLargeHole.number) {
+            if (this.boardState[0].nrStonesLargeHole.number > this.boardState[1].nrStonesLargeHole.number) {
                 result.finished = true;
                 result.player = 0;
             } else {
@@ -116,25 +116,24 @@ export class GameState {
 
     emptyHole(index: number) {
         if (index <= 6) {
-            this.boardState[0].nrStonesSmallHole.splice(index, 1, { index, number: 0 });
+            return this.boardState[0].nrStonesSmallHole.splice(index, 1, { index, number: 0 });
         } else if (index > 7 && index <= 14) {
-            this.boardState[1].nrStonesSmallHole.splice(index - 8, 1, { index, number: 0 });
+            return this.boardState[1].nrStonesSmallHole.splice(index - 8, 1, { index, number: 0 });
         }
     }
 
-    distributeStones(index: number, player: number): boolean {
+    distributeStones(index: number, player: number, numberOfStones: number): boolean {
         let extraTurn = false;
-        let numberOfStones = player === 0 ? this.boardState[0].nrStonesSmallHole[index].number : this.boardState[1].nrStonesSmallHole[index - 8].number;
-        // For each stone, find the appropriate action. This maybe possible in a simpler way
+
         for (let i = 1; i < numberOfStones + 1; i++) {
             let currentIndex = (index + i) % 16;
+
             if (currentIndex <= 6) {
                 const currentValue = this.boardState[0].nrStonesSmallHole[currentIndex].number;
                 this.boardState[0].nrStonesSmallHole.splice(currentIndex, 1, { index: currentIndex, number: currentValue + 1 });
             } else if (currentIndex === 7) {
                 if (player === 1) {
                     numberOfStones++;
-                    break;
                 } else {
                     this.boardState[0].nrStonesLargeHole.number++;
                     if (numberOfStones === i) {
@@ -146,7 +145,6 @@ export class GameState {
                 this.boardState[1].nrStonesSmallHole.splice(currentIndex - 8, 1, { index: currentIndex, number: currentValue + 1 });
             } else if (player === 0) {
                 numberOfStones++;
-                break;
             } else {
                 this.boardState[1].nrStonesLargeHole.number++;
                 if (numberOfStones === i) {

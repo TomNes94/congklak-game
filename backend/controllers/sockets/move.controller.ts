@@ -1,5 +1,4 @@
 import GameContainer from "../../models/GameContainer";
-import { Move } from "../../models/Game";
 import { io } from "../../server";
 
 export function handleNewMove(json: string) {
@@ -11,4 +10,8 @@ export function handleNewMove(json: string) {
     const container = GameContainer.getInstance();
     const newBoardState = container.handleMove(payload.roomId, move);
     io.to(payload.roomId).emit("moveResolved", JSON.stringify(newBoardState));
+}
+
+export function emitGameStartedEvent(roomId: string) {
+    io.to(roomId).emit("gameStarted", JSON.stringify("test"));
 }
