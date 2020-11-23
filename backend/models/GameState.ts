@@ -84,12 +84,15 @@ export class GameState {
         }
     ];
 
+    nextPlayer: number = 0;
+
     handleMove(player: number, index: number): { boardState: PlayerState[]; nextPlayer: number; result: { finished: boolean; player: number } } {
         let nextPlayer = player === 1 ? 0 : 1;
         const numberOfStones = this.emptyHole(index);
         const extraTurn = this.distributeStones(index, player, numberOfStones[0].number);
         if (extraTurn) nextPlayer = player;
         const result = this.checkWinCondition();
+        this.nextPlayer = nextPlayer;
         return { boardState: this.boardState, nextPlayer, result };
     }
 

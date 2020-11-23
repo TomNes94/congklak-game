@@ -1,6 +1,8 @@
 export default class Player {
-    socketId;
-    constructor(socketId: string) {
-        this.socketId = socketId;
+    uuid;
+    playerNumber;
+    constructor(uuid: string, playerNumber: number) {
+        this.uuid = uuid;
+        this.playerNumber = playerNumber;
     }
 }

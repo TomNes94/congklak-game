@@ -11,20 +11,29 @@ export class Game {
     players: Player[] = [];
     roomId: string;
 
-    constructor(socketId: string, roomId: string) {
-        const player = new Player(socketId);
+    constructor(uuid: string, roomId: string) {
+        const player = new Player(uuid, 0);
         this.players.push(player);
+
         this.roomId = roomId;
         this.state = new GameState();
     }
 
-    public addPlayerToRoom(socketId: string) {
-        const additionalPlayer = new Player(socketId);
+    public addPlayerToRoom(uuid: string) {
+        const additionalPlayer = new Player(uuid, 1);
         this.players.push(additionalPlayer);
     }
 
     onMoveReceived(move: Move): { boardState: PlayerState[]; nextPlayer: number; result: { finished: boolean; player: number } } {
         const { boardState, nextPlayer, result } = this.state.handleMove(move.player, move.index);
         return { boardState, nextPlayer, result };
+    }
+
+    getState() {
+        return this.state.boardState;
+    }
+
+    getNextPlayer() {
+        return this.state.nextPlayer;
     }
 }
