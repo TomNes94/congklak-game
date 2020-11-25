@@ -15,3 +15,7 @@ export function handleNewMove(json: string) {
 export function emitGameStartedEvent(roomId: string) {
     io.to(roomId).emit("gameStarted", JSON.stringify("test"));
 }
+
+export function emitGameSurrenderedEvent(roomId: string, result: { finished: boolean; player: number }) {
+    io.to(roomId).emit("gameSurrendered", JSON.stringify(result));
+}

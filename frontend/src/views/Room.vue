@@ -2,7 +2,6 @@
 .view-container
     button.button-white(@click="onCreateRoom") Play
     v-modal(v-if="showCreateRoomModal")
-        
 </template>
 
 <script>

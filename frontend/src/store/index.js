@@ -103,6 +103,10 @@ export default createStore({
             state.nextPlayer = payload.nextPlayer;
             state.isFinished = payload.result.finished;
             state.winner = payload.result.player;
+        },
+        onSurrender(state, payload) {
+            state.isFinished = payload.finished;
+            state.winner = payload.player;
         }
     },
     actions: {},

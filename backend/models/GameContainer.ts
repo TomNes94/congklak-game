@@ -1,7 +1,7 @@
 import { Game, Move } from "./Game";
 import { PlayerState } from "./GameState";
 import { Socket } from "socket.io";
-import { emitGameStartedEvent } from "../controllers/sockets/move.controller";
+import { emitGameStartedEvent, emitGameSurrenderedEvent } from "../controllers/sockets/move.controller";
 
 import cron from "node-cron";
 
@@ -75,6 +75,17 @@ export default class GameContainer {
         const gameState = game.getState();
         const nextPlayer = game.getNextPlayer();
         return { state: gameState, playerNumber, nextPlayer };
+    }
+
+    endGame(roomId: string, uuid: string) {
+        const gameIndex = this.games.findIndex(game => game.roomId === roomId);
+        const game = this.games.splice(gameIndex, 1);
+        const winningPlayer = game[0].players.find(player => player.uuid !== uuid);
+        const result = {
+            finished: true,
+            player: winningPlayer.playerNumber
+        };
+        emitGameSurrenderedEvent(roomId, result);
     }
 
     // Add the socket to the list

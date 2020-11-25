@@ -43,3 +43,11 @@ export function joinRandomRoom(req: Request, res: Response) {
         });
     }
 }
+
+export function surrender(req: Request, res: Response) {
+    const { roomId, uuid } = req.body;
+    const container = GameContainer.getInstance();
+    container.endGame(roomId, uuid);
+
+    res.sendStatus(200);
+}

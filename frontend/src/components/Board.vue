@@ -41,6 +41,9 @@ export default {
         this.vueSocket.socket.on("gameStarted", () => {
             this.updateGameMetadata({ started: true });
         });
+        this.vueSocket.socket.on("gameSurrendered", json => {
+            this.onSurrender(JSON.parse(json));
+        });
     },
     data() {
         return {
@@ -60,7 +63,7 @@ export default {
                 this.showError = true;
             }
         },
-        ...mapMutations(["distributeStones", "emptyHole", "updateGameMetadata"])
+        ...mapMutations(["distributeStones", "emptyHole", "updateGameMetadata", "onSurrender"])
     }
 };
 </script>
@@ -74,6 +77,7 @@ export default {
     flex-direction: column;
     align-items: center;
     padding: 2% 3%;
+    margin-bottom: 50px;
     @media (max-width: 480px) {
         width: 90%;
         padding: 5px;
