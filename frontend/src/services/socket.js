@@ -10,6 +10,7 @@ export class VueSocket {
 
         this.socket.on("connect", () => {
             this.socketId = this.socket.id;
+            console.log(this.socketId);
             this.registerUser();
         });
 

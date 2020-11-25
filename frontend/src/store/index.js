@@ -10,7 +10,7 @@ export default createStore({
             {
                 nrStonesLargeHole: {
                     index: 7,
-                    number: 7
+                    number: 0
                 },
                 nrStonesSmallHole: [
                     {
@@ -46,7 +46,7 @@ export default createStore({
             {
                 nrStonesLargeHole: {
                     index: 15,
-                    number: 7
+                    number: 0
                 },
                 nrStonesSmallHole: [
                     {

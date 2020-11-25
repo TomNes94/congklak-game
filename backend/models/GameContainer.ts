@@ -2,9 +2,12 @@ import { Game, Move } from "./Game";
 import { PlayerState } from "./GameState";
 import { Socket } from "socket.io";
 import { emitGameStartedEvent } from "../controllers/sockets/move.controller";
+
+import cron from "node-cron";
+
 export default class GameContainer {
     private static instance: GameContainer;
-
+    readonly TWO_DAYS_IN_MILLISECONDS = 17280000;
     // One array that contains all actual socket connections
     sockets: Socket[] = [];
 
@@ -19,13 +22,15 @@ export default class GameContainer {
             GameContainer.instance = new GameContainer();
         }
 
+        cron.schedule("00 00 00 * * 0-6", GameContainer.instance.removeStaleGames);
+
         return GameContainer.instance;
     }
 
-    public createGame(socketId: string, roomId: string) {
+    public createGame(socketId: string, roomId: string, isPrivate: boolean) {
         const { socket, uuid } = this.findSocketAndUuid(socketId);
         socket.join(roomId);
-        const newGame = new Game(uuid, roomId);
+        const newGame = new Game(uuid, roomId, isPrivate);
         this.games.push(newGame);
     }
 
@@ -96,8 +101,11 @@ export default class GameContainer {
     }
 
     handleMove(roomId: string, move: Move) {
-        const game = this.games.find(game => game.roomId === roomId);
-        const { boardState, nextPlayer, result } = game.onMoveReceived(move);
+        const gameIndex = this.games.findIndex(game => game.roomId === roomId);
+        const { boardState, nextPlayer, result } = this.games[gameIndex].onMoveReceived(move);
+        if (result.finished === true) {
+            this.games.splice(gameIndex, 1);
+        }
         return { boardState, nextPlayer, result };
     }
 
@@ -105,6 +113,10 @@ export default class GameContainer {
         const socket = this.sockets.find(connection => connection.id === socketId);
         const connection = this.connections.find(connection => connection.socketId === socketId);
 
-        return { socket, uuid: connection.uuid };
+        return { socket, uuid: connection?.uuid };
+    }
+
+    removeStaleGames() {
+        this.games = this.games.filter(game => game.lastActivity + this.TWO_DAYS_IN_MILLISECONDS > Date.now());
     }
 }

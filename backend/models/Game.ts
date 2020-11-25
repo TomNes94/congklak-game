@@ -10,13 +10,16 @@ export class Game {
     state: GameState;
     players: Player[] = [];
     roomId: string;
+    lastActivity: number;
+    isPrivate: boolean;
 
-    constructor(uuid: string, roomId: string) {
+    constructor(uuid: string, roomId: string, isPrivate: boolean) {
         const player = new Player(uuid, 0);
         this.players.push(player);
-
         this.roomId = roomId;
         this.state = new GameState();
+        this.lastActivity = Date.now();
+        this.isPrivate = isPrivate;
     }
 
     public addPlayerToRoom(uuid: string) {
@@ -26,6 +29,7 @@ export class Game {
 
     onMoveReceived(move: Move): { boardState: PlayerState[]; nextPlayer: number; result: { finished: boolean; player: number } } {
         const { boardState, nextPlayer, result } = this.state.handleMove(move.player, move.index);
+        this.lastActivity = Date.now();
         return { boardState, nextPlayer, result };
     }
 

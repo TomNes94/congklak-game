@@ -9,6 +9,7 @@
 import Board from "../components/Board";
 import { mapState, mapMutations } from "vuex";
 import SpinnerModal from "../components/SpinnerModal";
+import axios from "axios";
 export default {
     name: "Home",
     components: { Board, SpinnerModal },
@@ -17,6 +18,26 @@ export default {
             return this.nextPlayer === this.metaData.player ? "It's your turn" : "Wait for other turn";
         },
         ...mapState(["boardState", "vueSocket", "metaData", "nextPlayer"])
+    },
+    async mounted() {
+        if (!!this.$route.params.isRandom || (this.$route.params.roomId !== null && this.$route.params.roomId !== undefined)) {
+            if (this.vueSocket.socketId === undefined || this.vueSocket.socketId === null) {
+                this.vueSocket.socket.on("connect", async () => {
+                    try {
+                        const result = await axios.get(`/api/room/${this.$route.params.roomId}`, { params: { id: this.vueSocket.socket.id } });
+                        this.setGameMetadata({ roomId: result.data.roomId, player: 1, started: true });
+                    } catch (error) {
+                        this.$router.push({ name: "Room" });
+                    }
+                });
+            } else if (this.$route.params.isRandom !== "true") {
+                const result = await axios.get(`/api/room/${this.$route.params.roomId}`, { params: { id: this.vueSocket.socketId } });
+                this.setGameMetadata({ roomId: result.data.roomId, player: 1, started: false });
+            }
+        }
+    },
+    methods: {
+        ...mapMutations(["setGameMetadata"])
     }
 };
 </script>

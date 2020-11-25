@@ -2,9 +2,11 @@
 .modal
     .dialog
         .row
-            button.button-white(@click="createRoom") Create Room
-            p {{metaData.roomId}}
+            button.button-white(@click="createRoom") Create Private Room
         hr
+        .row
+            button.button-white(@click="findPublicGame") Play with Random
+        hr        
         .row
             input(v-model="roomInput")           
             button.button-white(@click="joinRoom") Join Room
@@ -15,8 +17,8 @@ import axios from "axios";
 import { mapState, mapMutations } from "vuex";
 export default {
     methods: {
-        async createRoom() {
-            const result = await axios.post("/api/room", { socketId: this.vueSocket.socketId });
+        async createRoom(isPrivate) {
+            const result = await axios.post("/api/room", { socketId: this.vueSocket.socketId, isPrivate });
 
             this.setGameMetadata({ roomId: result.data.roomId, player: 0, started: false });
             this.$router.push({
@@ -36,6 +38,18 @@ export default {
                 } catch (error) {
                     console.log(error);
                 }
+            }
+        },
+        async findPublicGame() {
+            try {
+                const result = await axios.get(`/api/room/random`, { params: { id: this.vueSocket.socketId } });
+                this.setGameMetadata({ roomId: result.data.roomId, player: result.data.player, started: result.data.player === 1 });
+                this.$router.push({
+                    name: "BoardContainer",
+                    params: { roomId: result.data.roomId, player: result.data.player, isRandom: true }
+                });
+            } catch (error) {
+                console.log(error);
             }
         },
         ...mapMutations(["setGameMetadata"])
@@ -76,10 +90,8 @@ export default {
     z-index: 101;
     position: absolute;
     border-radius: 20px;
-    top: 30%;
     left: 30%;
     width: 40%;
-    height: 40%;
     @media (max-width: 480px) {
         left: 10%;
         width: 80%;
