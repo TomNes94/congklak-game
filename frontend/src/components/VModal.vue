@@ -23,7 +23,7 @@ export default {
             this.setGameMetadata({ roomId: result.data.roomId, player: 0, started: false });
             this.$router.push({
                 name: "BoardContainer",
-                params: { roomId: this.metaData.roomId }
+                params: { roomId: this.metaData.roomId, isRandom: true }
             });
         },
         async joinRoom() {

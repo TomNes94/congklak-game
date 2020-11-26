@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapMutations } from "vuex";
 export default {
     props: ["active", "isWinner"],
     computed: {
@@ -19,10 +20,12 @@ export default {
     },
     methods: {
         onPlayAgain() {
+            this.onSurrender({ finished: false, player: 0 });
             this.$router.push({
                 name: "Room"
             });
-        }
+        },
+        ...mapMutations(["onSurrender"])
     }
 };
 </script>
