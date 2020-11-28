@@ -11,7 +11,9 @@ export default {
     methods: {
         onClickHandler(e) {
             e.stopPropagation();
-            this.$emit("move", { index: this.index, player: this.player });
+            if (this.nrStones > 0) {
+                this.$emit("move", { index: this.index, player: this.player });
+            }
         }
     }
 };

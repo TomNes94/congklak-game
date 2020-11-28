@@ -32,8 +32,12 @@ export default {
                     }
                 });
             } else if (this.$route.params.isRandom !== "true") {
-                const result = await axios.get(`/api/room/${this.$route.params.roomId}`, { params: { id: this.vueSocket.socketId } });
-                this.setGameMetadata({ roomId: result.data.roomId, player: 1, started: true });
+                try {
+                    const result = await axios.get(`/api/room/${this.$route.params.roomId}`, { params: { id: this.vueSocket.socketId } });
+                    this.setGameMetadata({ roomId: result.data.roomId, player: 1, started: true });
+                } catch (error) {
+                    this.$router.push({ name: "Room" });
+                }
             }
         }
     },
@@ -48,7 +52,7 @@ export default {
 
 <style lang="scss" scoped>
 .player-current {
-    margin: 5% 0 5% 0;
+    margin: 1% 0 1% 0;
     font-size: 32px;
     color: white;
 }
