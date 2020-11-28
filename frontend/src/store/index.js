@@ -107,6 +107,92 @@ export default createStore({
         onSurrender(state, payload) {
             state.isFinished = payload.finished;
             state.winner = payload.player;
+        },
+        resetBoardState(state) {
+            state.boardState = [
+                {
+                    nrStonesLargeHole: {
+                        index: 7,
+                        number: 0
+                    },
+                    nrStonesSmallHole: [
+                        {
+                            index: 0,
+                            number: 7
+                        },
+                        {
+                            index: 1,
+                            number: 7
+                        },
+                        {
+                            index: 2,
+                            number: 7
+                        },
+                        {
+                            index: 3,
+                            number: 7
+                        },
+                        {
+                            index: 4,
+                            number: 7
+                        },
+                        {
+                            index: 5,
+                            number: 7
+                        },
+                        {
+                            index: 6,
+                            number: 7
+                        }
+                    ]
+                },
+                {
+                    nrStonesLargeHole: {
+                        index: 15,
+                        number: 0
+                    },
+                    nrStonesSmallHole: [
+                        {
+                            index: 8,
+                            number: 7
+                        },
+                        {
+                            index: 9,
+                            number: 7
+                        },
+                        {
+                            index: 10,
+                            number: 7
+                        },
+                        {
+                            index: 11,
+                            number: 7
+                        },
+                        {
+                            index: 12,
+                            number: 7
+                        },
+                        {
+                            index: 13,
+                            number: 7
+                        },
+                        {
+                            index: 14,
+                            number: 7
+                        }
+                    ]
+                }
+            ];
+
+            state.nextPlayer = 0;
+            state.winner = null;
+            state.isFinished = false;
+
+            state.metaData = {
+                roomId: null,
+                player: null,
+                started: false
+            };
         }
     },
     actions: {},

@@ -43,6 +43,7 @@ export default {
         });
         this.vueSocket.socket.on("gameSurrendered", json => {
             this.onSurrender(JSON.parse(json));
+            this.resetBoardState();
         });
     },
     data() {
@@ -63,7 +64,7 @@ export default {
                 this.showError = true;
             }
         },
-        ...mapMutations(["distributeStones", "emptyHole", "updateGameMetadata", "onSurrender"])
+        ...mapMutations(["distributeStones", "emptyHole", "updateGameMetadata", "onSurrender", "resetBoardState"])
     }
 };
 </script>

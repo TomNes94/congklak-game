@@ -20,12 +20,12 @@ export default {
     },
     methods: {
         onPlayAgain() {
-            this.onSurrender({ finished: false, player: 0 });
+            this.resetBoardState();
             this.$router.push({
                 name: "Room"
             });
         },
-        ...mapMutations(["onSurrender"])
+        ...mapMutations(["resetBoardState"])
     }
 };
 </script>

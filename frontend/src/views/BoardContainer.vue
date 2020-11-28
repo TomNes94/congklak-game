@@ -22,7 +22,6 @@ export default {
     },
     async mounted() {
         if (!!this.$route.params.isRandom || (this.$route.params.roomId !== null && this.$route.params.roomId !== undefined)) {
-            console.log(this.$route);
             if (this.vueSocket.socketId === undefined || this.vueSocket.socketId === null) {
                 this.vueSocket.socket.on("connect", async () => {
                     try {
@@ -33,7 +32,6 @@ export default {
                     }
                 });
             } else if (this.$route.params.isRandom !== "true") {
-                console.log("test");
                 const result = await axios.get(`/api/room/${this.$route.params.roomId}`, { params: { id: this.vueSocket.socketId } });
                 this.setGameMetadata({ roomId: result.data.roomId, player: 1, started: true });
             }
