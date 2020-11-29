@@ -1,7 +1,7 @@
 <template>
     <div id="nav">
         <router-link v-if="$router.currentRoute._value.name !== 'BoardContainer'" to="/">Home</router-link> |
-        <router-link to="/how-to">How to play?</router-link> |
+        <router-link to="/how-to">How to play</router-link> |
         <router-link to="/about">About</router-link>
     </div>
     <router-view />
@@ -12,17 +12,15 @@
 #app {
     font-family: helvetica, arial, sans-serif;
     color: #2c3e50;
-    height: 100%;
     width: 100%;
 }
 html,
 body {
     background-color: rgb(41, 41, 41);
-    height: 100vh;
     width: 100vw;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow-x: hidden;
 }
 *,
 *:before,

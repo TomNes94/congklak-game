@@ -84,7 +84,7 @@ export default {
 
     @media (max-width: 480px) {
         width: 85%;
-        padding: 4px;
+        padding: 6px 4px 16px 4px;
         border-radius: 75px;
     }
 }
@@ -94,7 +94,7 @@ export default {
     justify-content: space-around;
     margin: 2%;
     @media (max-width: 480px) {
-        margin: 7% 2%;
+        margin: 9% 2%;
     }
 }
 
