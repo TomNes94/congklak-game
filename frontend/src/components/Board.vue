@@ -1,12 +1,12 @@
 <template lang="pug">
 .board
     .holes-row
-        hole(v-for="hole in boardState[0].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, 0)" player=0)
+        hole(v-for="hole in boardState[metaData.player === 1 ? 0 : 1].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, metaData.player === 1 ? 0 : 1)" :player="metaData.player === 1 ? 0 : 1")
     .large-hole-row
-        large-hole(:isFilled="boardState[1].nrStonesLargeHole.number > 0" :nrStones="boardState[1].nrStonesLargeHole.number")
-        large-hole(:isFilled="boardState[0].nrStonesLargeHole.number > 0" :nrStones="boardState[0].nrStonesLargeHole.number")
+        large-hole(:isFilled="boardState[metaData.player].nrStonesLargeHole.number > 0" :nrStones="boardState[metaData.player].nrStonesLargeHole.number")
+        large-hole(:isFilled="boardState[metaData.player === 1 ? 0 : 1].nrStonesLargeHole.number > 0" :nrStones="boardState[metaData.player === 1 ? 0 : 1].nrStonesLargeHole.number")
     .holes-row.holes-row-reverse
-        hole(v-for="hole in boardState[1].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, 1)" player=1)
+        hole(v-for="hole in boardState[metaData.player].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, metaData.player)" :player="metaData.player" :active="nextPlayer === metaData.player && hole.number !==0 ")
     message(:active = "showError")
         span {{errorText}}
     victory-modal(:active="isFinished" :isWinner="winner === metaData.player")
@@ -79,9 +79,12 @@ export default {
     align-items: center;
     padding: 2% 3%;
     margin-bottom: 50px;
+    box-shadow: inset 3px 1px 55px 1px rgba(0, 0, 0, 0.45);
+    border: 15px rgb(121, 89, 55) solid;
+
     @media (max-width: 480px) {
-        width: 90%;
-        padding: 5px;
+        width: 85%;
+        padding: 4px;
         border-radius: 75px;
     }
 }

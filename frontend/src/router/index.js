@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 import BoardContainer from "../views/BoardContainer.vue";
 import Room from "../views/Room.vue";
+import HowTo from "../views/HowTo.vue";
 
 const routes = [
     {
@@ -12,6 +13,11 @@ const routes = [
         path: "/board/:roomId",
         name: "BoardContainer",
         component: BoardContainer
+    },
+    {
+        path: "/how-to",
+        name: "HowTo",
+        component: HowTo
     },
     {
         path: "/about",

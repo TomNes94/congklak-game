@@ -24,7 +24,6 @@ export default {
 
 <style lang="scss" scoped>
 .view-container {
-    background-color: black;
     height: 100vh;
     width: 100vw;
     display: flex;

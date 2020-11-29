@@ -91,7 +91,7 @@ export class GameState {
         const numberOfStones = this.emptyHole(index);
         const extraTurn = this.distributeStones(index, player, numberOfStones[0].number);
         if (extraTurn) nextPlayer = player;
-        if (!this.boardState[nextPlayer].nrStonesSmallHole.every(hole => hole.number === 0)) {
+        if (this.boardState[nextPlayer].nrStonesSmallHole.every(hole => hole.number === 0)) {
             nextPlayer = nextPlayer === 1 ? 0 : 1;
         }
         const result = this.checkWinCondition();

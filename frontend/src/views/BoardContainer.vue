@@ -57,7 +57,6 @@ export default {
     color: white;
 }
 .board-container {
-    background-color: black;
     height: 100vh;
     width: 100vw;
     display: flex;

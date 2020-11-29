@@ -1,6 +1,7 @@
 <template>
     <div id="nav">
         <router-link v-if="$router.currentRoute._value.name !== 'BoardContainer'" to="/">Home</router-link> |
+        <router-link to="/how-to">How to play?</router-link> |
         <router-link to="/about">About</router-link>
     </div>
     <router-view />
@@ -9,25 +10,30 @@
 <style lang="scss">
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap");
 #app {
-    font-family: Roboto, Helvetica, Arial, sans-serif;
+    font-family: helvetica, arial, sans-serif;
     color: #2c3e50;
     height: 100%;
     width: 100%;
 }
 html,
 body {
+    background-color: rgb(41, 41, 41);
     height: 100vh;
     width: 100vw;
     margin: 0;
     padding: 0;
     overflow: hidden;
 }
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
 
 #nav {
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    background: black;
     font-size: 1.75rem;
     @media (max-width: 480px) {
         font-size: 1rem;

@@ -1,5 +1,5 @@
 <template lang="pug">
-span.circle(@click="onClickHandler")
+span.circle(:class="{active}" @click="onClickHandler")
     img.circle-small(:src="require('../assets/shell.png')" v-if="isFilled")
     span.text-number-stones {{nrStones}}
 </template>
@@ -7,7 +7,7 @@ span.circle(@click="onClickHandler")
 <script>
 export default {
     name: "Hole",
-    props: ["isFilled", "nrStones", "index", "player"],
+    props: ["isFilled", "nrStones", "index", "player", "active"],
     methods: {
         onClickHandler(e) {
             e.stopPropagation();
@@ -24,12 +24,16 @@ export default {
     position: relative;
     height: 75px;
     width: 75px;
-    background-color: #bbb;
+    background-color: rgb(121, 89, 55);
     border-radius: 50%;
     display: inline-block;
     cursor: pointer;
+    box-shadow: inset 1px 1px 3px 1px rgba(0, 0, 0, 0.45);
     &:hover {
-        background-color: grey;
+        background-color: rgb(99, 73, 45);
+    }
+    &.active {
+        border: 2px rgb(118, 1, 1) solid;
     }
     @media (max-width: 480px) {
         height: 35px;

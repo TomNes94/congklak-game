@@ -16,13 +16,14 @@ export default {
     position: relative;
     height: 75px;
     width: 300px;
-    background-color: #bbb;
+    background-color: rgb(121, 89, 55);
     border-radius: 38px;
     display: inline-block;
     cursor: pointer;
+    box-shadow: inset 1px 1px 5px 1px rgba(0, 0, 0, 0.45);
 
     &:hover {
-        background-color: grey;
+        background-color: rgb(99, 73, 45);
     }
 
     @media (max-width: 480px) {
