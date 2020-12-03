@@ -41,6 +41,7 @@ export default class GameContainer {
         socket.join(roomId);
         if (game) {
             game.addPlayerToRoom(uuid);
+            game.started = true;
             emitGameStartedEvent(roomId);
             return true;
         } else {

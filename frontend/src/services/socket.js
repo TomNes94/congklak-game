@@ -15,8 +15,8 @@ export class VueSocket {
 
         this.socket.on("game_reconnection", data => {
             const parsedData = JSON.parse(data);
-            console.log(data);
-            store.commit("setGameMetadata", { roomId: parsedData.roomId, player: parsedData.playerNumber, started: true });
+            console.log(parsedData);
+            store.commit("setGameMetadata", { roomId: parsedData.roomId, player: parsedData.playerNumber, started: parsedData.started });
             store.commit("distributeStones", { boardState: parsedData.state, nextPlayer: parsedData.nextPlayer, result: { finished: false, player: 0 } });
             router.push({
                 name: "BoardContainer",

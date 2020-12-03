@@ -6,6 +6,7 @@ export function createRoom(req: Request, res: Response) {
     const container = GameContainer.getInstance();
     const id = generateRoomId();
     container.createGame(req.body.socketId, id, req.body.isPrivate);
+    console.log(req.body.isPrivate);
     res.send({
         roomId: id
     });

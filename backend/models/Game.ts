@@ -12,6 +12,7 @@ export class Game {
     roomId: string;
     lastActivity: number;
     isPrivate: boolean;
+    started: boolean;
 
     constructor(uuid: string, roomId: string, isPrivate: boolean) {
         const player = new Player(uuid, 0);
@@ -20,6 +21,7 @@ export class Game {
         this.state = new GameState();
         this.lastActivity = Date.now();
         this.isPrivate = isPrivate;
+        this.started = false;
     }
 
     public addPlayerToRoom(uuid: string) {

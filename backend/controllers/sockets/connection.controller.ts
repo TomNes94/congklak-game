@@ -17,7 +17,7 @@ export function handleRegister(json: string, socket: Socket) {
     const currentGame = container.checkCurrentGame(payload.uuid);
     if (currentGame !== undefined && currentGame !== null) {
         const currentGameState = container.rejoinGame(socket.id);
-        socket.emit("game_reconnection", JSON.stringify({ roomId: currentGame.roomId, ...currentGameState }));
+        socket.emit("game_reconnection", JSON.stringify({ roomId: currentGame.roomId, started: currentGame.started, ...currentGameState }));
     } else {
         null;
     }

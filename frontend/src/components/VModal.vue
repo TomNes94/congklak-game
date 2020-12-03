@@ -17,8 +17,8 @@ import axios from "axios";
 import { mapState, mapMutations } from "vuex";
 export default {
     methods: {
-        async createRoom(isPrivate) {
-            const result = await axios.post("/api/room", { socketId: this.vueSocket.socketId, isPrivate });
+        async createRoom() {
+            const result = await axios.post("/api/room", { socketId: this.vueSocket.socketId, isPrivate: true });
 
             this.setGameMetadata({ roomId: result.data.roomId, player: 0, started: false });
             this.$router.push({
