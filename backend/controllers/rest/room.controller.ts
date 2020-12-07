@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 export function createRoom(req: Request, res: Response) {
     const container = GameContainer.getInstance();
     const id = generateRoomId();
-    container.createGame(req.body.socketId, id, req.body.isPrivate, req.body.againstAI, 6);
+    container.createGame(req.body.socketId, id, req.body.isPrivate, req.body.againstAI, 2);
     res.send({
         roomId: id
     });
