@@ -37,6 +37,14 @@ export default {
             await axios.post("/api/room/surrender", { roomId: this.metaData.roomId, uuid: localStorage.getItem("uuid") });
         },
         ...mapMutations(["setGameMetadata"])
+    },
+    beforeRouteLeave(to, from, next) {
+        if (!this.metaData.isFinished) {
+            console.log();
+            next(false);
+        } else {
+            next();
+        }
     }
 };
 </script>

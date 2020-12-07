@@ -6,7 +6,7 @@
 
 <script>
 export default {
-    props: ["active"],
+    props: ["active", "type"],
     data() {
         return {
             error: {

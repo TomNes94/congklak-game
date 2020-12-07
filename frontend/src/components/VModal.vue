@@ -6,6 +6,9 @@
         hr
         .row
             button.button-white(@click="findPublicGame") Play with Random
+        hr
+        .row
+            button.button-white(@click="findAIGame") Play against Computer            
         hr        
         .row
             input(v-model="roomInput")           
@@ -18,7 +21,7 @@ import { mapState, mapMutations } from "vuex";
 export default {
     methods: {
         async createRoom() {
-            const result = await axios.post("/api/room", { socketId: this.vueSocket.socketId, isPrivate: true });
+            const result = await axios.post("/api/room", { socketId: this.vueSocket.socketId, isPrivate: true, againstAI: false });
 
             this.setGameMetadata({ roomId: result.data.roomId, player: 0, started: false });
             this.$router.push({
@@ -51,6 +54,15 @@ export default {
             } catch (error) {
                 console.log(error);
             }
+        },
+        async findAIGame() {
+            const result = await axios.post("/api/room", { socketId: this.vueSocket.socketId, isPrivate: true, againstAI: true });
+
+            this.setGameMetadata({ roomId: result.data.roomId, player: 0, started: false });
+            this.$router.push({
+                name: "BoardContainer",
+                params: { roomId: this.metaData.roomId, isRandom: true }
+            });
         },
         ...mapMutations(["setGameMetadata"])
     },

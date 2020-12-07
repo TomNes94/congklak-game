@@ -8,17 +8,37 @@
         .sk-chase-dot
         .sk-chase-dot
     span.text-loading Waiting for player...
-    a(:href="whatsappLink" data-action="share/whatsapp/share") Share via Whatsapp
-
+    .button-white#copy-button(:data-clipboard-text="roomId") Copy code
+    message(:active = "showMessage")
+        span {{message}}
 </template>
 
 <script>
+import Message from "./Message";
+
+import ClipboardJS from "clipboard";
 export default {
     props: ["active", "roomId"],
+    mounted() {
+        const clipboard = new ClipboardJS(".button-white");
+        clipboard.on("success", () => {
+            this.showMessage = true;
+            this.message = "Code copied succesfully!";
+        });
+    },
     computed: {
         whatsappLink() {
             return `whatsapp://send?text=${encodeURIComponent(`Join my game at https://mancala.tomvannes.dev/ with this code: ${this.roomId}`)}`;
         }
+    },
+    data() {
+        return {
+            showMessage: false,
+            message: null
+        };
+    },
+    components: {
+        Message
     }
 };
 </script>
@@ -48,6 +68,22 @@ $spinner-color: #eb7207;
     }
 }
 
+.button-white {
+    background-color: rgb(213, 213, 213);
+    padding: 20px 40px;
+    color: black;
+    font-size: 1.75rem;
+    @media (max-width: 480px) {
+        padding: 10px 20px;
+        font-size: 0.7rem;
+    }
+    border-radius: 20px;
+    cursor: pointer;
+    border: none;
+    &:hover {
+        background-color: rgb(197, 197, 197);
+    }
+}
 .sk-chase {
     width: 40px;
     height: 40px;

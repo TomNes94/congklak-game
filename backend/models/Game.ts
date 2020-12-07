@@ -1,5 +1,6 @@
 import { GameState, PlayerState } from "./GameState";
 import Player from "./Player";
+import AI from "./AI";
 
 export interface Move {
     player: number;
@@ -13,8 +14,9 @@ export class Game {
     lastActivity: number;
     isPrivate: boolean;
     started: boolean;
+    AI: AI = null;
 
-    constructor(uuid: string, roomId: string, isPrivate: boolean) {
+    constructor(uuid: string, roomId: string, isPrivate: boolean, againstAI: boolean, difficulty: number) {
         const player = new Player(uuid, 0);
         this.players.push(player);
         this.roomId = roomId;
@@ -22,6 +24,9 @@ export class Game {
         this.lastActivity = Date.now();
         this.isPrivate = isPrivate;
         this.started = false;
+        if (againstAI) {
+            this.AI = new AI(difficulty);
+        }
     }
 
     public addPlayerToRoom(uuid: string) {

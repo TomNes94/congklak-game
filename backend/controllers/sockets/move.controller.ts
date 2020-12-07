@@ -10,6 +10,20 @@ export function handleNewMove(json: string) {
     const container = GameContainer.getInstance();
     const newBoardState = container.handleMove(payload.roomId, move);
     io.to(payload.roomId).emit("moveResolved", JSON.stringify(newBoardState));
+
+    if (newBoardState.againstAI && newBoardState.nextPlayer === 1) {
+        setTimeout(() => {
+            let AIFinished: boolean = true;
+            let newBoardState;
+            while (AIFinished) {
+                newBoardState = container.handleAIMove(payload.roomId);
+                if (newBoardState.nextPlayer === 0 || newBoardState.result.finished) {
+                    AIFinished = false;
+                }
+            }
+            io.to(payload.roomId).emit("moveResolved", JSON.stringify(newBoardState));
+        }, 2000);
+    }
 }
 
 export function emitGameStartedEvent(roomId: string) {

@@ -104,8 +104,7 @@ export class GameState {
             finished: false,
             player: 0
         };
-        const anyStonesLeft =
-            this.boardState[0].nrStonesSmallHole.some(hole => hole.number !== 0) || this.boardState[1].nrStonesSmallHole.some(hole => hole.number !== 0);
+        const anyStonesLeft = this.boardState[0].nrStonesSmallHole.some(hole => hole.number !== 0) || this.boardState[1].nrStonesSmallHole.some(hole => hole.number !== 0);
         if (!anyStonesLeft) {
             if (this.boardState[0].nrStonesLargeHole.number > this.boardState[1].nrStonesLargeHole.number) {
                 result.finished = true;
@@ -130,7 +129,6 @@ export class GameState {
 
     distributeStones(index: number, player: number, numberOfStones: number): boolean {
         let extraTurn = false;
-
         for (let i = 1; i < numberOfStones + 1; i++) {
             let currentIndex = (index + i) % 16;
 

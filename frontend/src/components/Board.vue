@@ -43,7 +43,6 @@ export default {
         });
         this.vueSocket.socket.on("gameSurrendered", json => {
             this.onSurrender(JSON.parse(json));
-            this.resetBoardState();
         });
     },
     data() {
@@ -55,6 +54,7 @@ export default {
     methods: {
         handleStoneClick(obj, player) {
             if (player === this.metaData.player && player === this.nextPlayer) {
+                console.log(this.metaData.player, this.nextPlayer, player);
                 this.vueSocket.socket.emit("move", JSON.stringify({ index: obj.index, player, roomId: this.metaData.roomId }));
             } else if (player === this.metaData.player) {
                 this.errorText = "It's not your turn yet!";

@@ -27,11 +27,17 @@ export default class GameContainer {
         return GameContainer.instance;
     }
 
-    public createGame(socketId: string, roomId: string, isPrivate: boolean) {
+    public createGame(socketId: string, roomId: string, isPrivate: boolean, againstAI: boolean, difficulty: number) {
         const { socket, uuid } = this.findSocketAndUuid(socketId);
         socket.join(roomId);
-        const newGame = new Game(uuid, roomId, isPrivate);
+        const newGame = new Game(uuid, roomId, isPrivate, againstAI, difficulty);
         this.games.push(newGame);
+        if (againstAI) {
+            setTimeout(() => {
+                newGame.started = true;
+                emitGameStartedEvent(roomId);
+            }, 500);
+        }
     }
 
     // If the game with Room id x exists, join it and emit to players that it has started
@@ -115,10 +121,25 @@ export default class GameContainer {
     handleMove(roomId: string, move: Move) {
         const gameIndex = this.games.findIndex(game => game.roomId === roomId);
         const { boardState, nextPlayer, result } = this.games[gameIndex].onMoveReceived(move);
+        const againstAI = this.games[gameIndex].AI !== null;
         if (result.finished === true) {
             this.games.splice(gameIndex, 1);
         }
-        return { boardState, nextPlayer, result };
+
+        return { boardState, nextPlayer, result, againstAI };
+    }
+
+    handleAIMove(roomId: string) {
+        const gameIndex = this.games.findIndex(game => game.roomId === roomId);
+        const game = this.games[gameIndex];
+        const move = game.AI.getMove(game.state.boardState, 1);
+        const { boardState, nextPlayer, result } = game.onMoveReceived({ index: move, player: 1 });
+
+        if (result.finished === true) {
+            this.games.splice(gameIndex, 1);
+        }
+
+        return { boardState, nextPlayer, result, againstAI: game.AI !== null };
     }
 
     findSocketAndUuid(socketId: string): { socket: Socket; uuid: string } {

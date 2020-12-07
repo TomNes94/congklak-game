@@ -5,8 +5,7 @@ import { Request, Response } from "express";
 export function createRoom(req: Request, res: Response) {
     const container = GameContainer.getInstance();
     const id = generateRoomId();
-    container.createGame(req.body.socketId, id, req.body.isPrivate);
-    console.log(req.body.isPrivate);
+    container.createGame(req.body.socketId, id, req.body.isPrivate, req.body.againstAI, 6);
     res.send({
         roomId: id
     });
@@ -37,7 +36,7 @@ export function joinRandomRoom(req: Request, res: Response) {
         }
     } else {
         const id = generateRoomId();
-        container.createGame(socketId, id, false);
+        container.createGame(socketId, id, false, false, 0);
         res.send({
             roomId: id,
             player: 0
