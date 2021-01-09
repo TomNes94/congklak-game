@@ -41,3 +41,5 @@ dist/**/*
 yarn.lock
 
 backend/tests
+
+mancala-mobile-app/**/*

@@ -20,10 +20,8 @@ export default {
     },
     methods: {
         onPlayAgain() {
+            this.$router.go("/");
             this.resetBoardState();
-            this.$router.push({
-                name: "Room"
-            });
         },
         ...mapMutations(["resetBoardState"])
     }

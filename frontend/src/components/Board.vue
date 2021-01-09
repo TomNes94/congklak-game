@@ -1,7 +1,7 @@
 <template lang="pug">
 .board
     .holes-row
-        hole(v-for="hole in boardState[metaData.player === 1 ? 0 : 1].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, metaData.player === 1 ? 0 : 1)" :player="metaData.player === 1 ? 0 : 1")
+        hole(v-for="hole in boardState[metaData.player === 1 ? 0 : 1].nrStonesSmallHole" :isFilled="hole.number > 0" :nrStones="hole.number" :index="hole.index" @move="handleStoneClick(hole, metaData.player === 1 ? 0 : 1)" :player="metaData.player === 1 ? 0 : 1" :ref="`hole_${hole.index}`")
     .large-hole-row
         large-hole(:isFilled="boardState[metaData.player].nrStonesLargeHole.number > 0" :nrStones="boardState[metaData.player].nrStonesLargeHole.number")
         large-hole(:isFilled="boardState[metaData.player === 1 ? 0 : 1].nrStonesLargeHole.number > 0" :nrStones="boardState[metaData.player === 1 ? 0 : 1].nrStonesLargeHole.number")
@@ -36,6 +36,7 @@ export default {
     },
     mounted() {
         this.vueSocket.socket.on("moveResolved", data => {
+            console.log(this.$refs.hole_8.$el.getBoundingClientRect());
             this.distributeStones(JSON.parse(data));
         });
         this.vueSocket.socket.on("gameStarted", () => {
@@ -54,7 +55,6 @@ export default {
     methods: {
         handleStoneClick(obj, player) {
             if (player === this.metaData.player && player === this.nextPlayer) {
-                console.log(this.metaData.player, this.nextPlayer, player);
                 this.vueSocket.socket.emit("move", JSON.stringify({ index: obj.index, player, roomId: this.metaData.roomId }));
             } else if (player === this.metaData.player) {
                 this.errorText = "It's not your turn yet!";
@@ -64,6 +64,18 @@ export default {
                 this.showError = true;
             }
         },
+        animateStonesMoving(elements) {
+            Object.keys(elements).forEach(element => {
+                const index = parseInt(element.replace("hole_", ""));
+                const el = elements[element];
+                const coords = el.getBoundingClientRect();
+                const img = document.createElement("img");
+                img.setAttribute("src", "/img/shell.e4fabc44.png");
+                img.style.left = coords.left + "px";
+                img.style.top = coords.top + "px";
+            });
+        },
+
         ...mapMutations(["distributeStones", "emptyHole", "updateGameMetadata", "onSurrender", "resetBoardState"])
     }
 };

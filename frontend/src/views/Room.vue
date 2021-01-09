@@ -24,7 +24,7 @@ export default {
 
 <style lang="scss" scoped>
 .view-container {
-    height: 100vh;
+    height: calc(100vh - 4rem);
     width: 100vw;
     display: flex;
     justify-content: center;

@@ -4,6 +4,7 @@ import { Socket } from "socket.io";
 import { emitGameStartedEvent, emitGameSurrenderedEvent } from "../controllers/sockets/move.controller";
 
 import cron from "node-cron";
+import Player from "./Player";
 
 export default class GameContainer {
     private static instance: GameContainer;
@@ -87,7 +88,13 @@ export default class GameContainer {
     endGame(roomId: string, uuid: string) {
         const gameIndex = this.games.findIndex(game => game.roomId === roomId);
         const game = this.games.splice(gameIndex, 1);
-        const winningPlayer = game[0].players.find(player => player.uuid !== uuid);
+
+        let winningPlayer: Partial<Player>;
+        if (game[0].players.length === 1) {
+            winningPlayer = { playerNumber: game[0].players[0].playerNumber === 0 ? 1 : 0 };
+        } else {
+            winningPlayer = game[0].players.find(player => player.uuid !== uuid);
+        }
         const result = {
             finished: true,
             player: winningPlayer.playerNumber

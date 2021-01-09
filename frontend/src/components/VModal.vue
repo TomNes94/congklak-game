@@ -102,7 +102,7 @@ export default {
     z-index: 101;
     position: absolute;
     border-radius: 20px;
-    left: 30%;
+    left: 25%;
     width: 40%;
     @media (max-width: 480px) {
         left: 10%;
@@ -114,14 +114,14 @@ export default {
     display: flex;
     justify-content: space-around;
     width: 100%;
-    padding: 8% 5%;
+    padding: 5% 5%;
 }
 
 .button-white {
     background-color: rgb(213, 213, 213);
-    padding: 20px 40px;
+    padding: 10px 20px;
     color: black;
-    font-size: 1.75rem;
+    font-size: 1.5rem;
     @media (max-width: 480px) {
         padding: 10px 20px;
         font-size: 0.7rem;
