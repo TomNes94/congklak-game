@@ -1,8 +1,7 @@
 <template>
     <div id="nav">
-        <router-link v-if="$router.currentRoute._value.name !== 'BoardContainer'" to="/">Home</router-link> |
-        <router-link to="/how-to">How to play</router-link> |
-        <router-link to="/about">About</router-link>
+        <router-link v-if="$router.currentRoute._value.name !== 'BoardContainer'" to="/">Home</router-link> | <router-link to="/how-to">How to play</router-link> | <router-link to="/about">About</router-link> |
+        <a href="mancala.tomvannes.dev">Github source</a>
     </div>
     <router-view />
 </template>
