@@ -36,7 +36,6 @@ export default {
     },
     mounted() {
         this.vueSocket.socket.on("moveResolved", data => {
-            console.log(this.$refs.hole_8.$el.getBoundingClientRect());
             this.distributeStones(JSON.parse(data));
         });
         this.vueSocket.socket.on("gameStarted", () => {
